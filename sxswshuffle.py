@@ -1,10 +1,14 @@
 
 import glob
 import os
+import shutil
+
 
 input1_only = []
 input2_only = []
 shared = []
+
+
 
 #######################
 ####create list of file names
@@ -20,7 +24,8 @@ input2 = glob.glob('input2/*.mp3')
 #removes the directory heading from each entry in the list
 input2_cleaned = ([s.strip('input2/') for s in input2])
 
-#TODO: compare files in input1 to the list and sort accordingly
+#########################
+####Sort file names into lists
 
 #analyize input1
 #for the first one you need to add files to the shared folder too
@@ -46,12 +51,32 @@ for root, dirs, files in os.walk("input2", topdown=False):
 
 
 
+
 print(f"shared: {shared}")
 print(f"input1_only: {input1_only}")
 print(f"input2_only: {input2_only}")
 
 
 
-#TODO: compare files in input2 to the list and sort accordingly
+#TODO: compare files in input2 to the lists and copy accordingly
+
+for root, dirs, files in os.walk("input2", topdown=False):
+    for filename in files:
+        print(filename)
+        if filename in input2_only:
+            print('yay')
+            out = "outputs/" + filename
+            shutil.copy(os.path.join(root, filename), out)
+
+
+# for file in directory:
+    #if file in shared:
+        #copy file to /shared
+    #elif file in input1_only:
+        #copy file to /input1_only
+    #elif file in input2_only:
+        #copy file to /input2_only
+    #else:
+        #print("error")
 
 #TODO: rewrite mp3 tags
