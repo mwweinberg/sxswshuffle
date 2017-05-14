@@ -50,33 +50,38 @@ for root, dirs, files in os.walk("input2", topdown=False):
             input2_only.append(name)
 
 
+#############################
+#####Sort files
+##############################
 
-
-print(f"shared: {shared}")
-print(f"input1_only: {input1_only}")
-print(f"input2_only: {input2_only}")
-
-
-
-#TODO: compare files in input2 to the lists and copy accordingly
+#compares files against the lists and copies accordingly
+#for files in input 1
+for root, dirs, files in os.walk("input1", topdown=False):
+    for filename in files:
+        #if the file shows up in the input1_only list
+        if filename in input1_only:
+            #this creates the output filename (includes director)
+            in1_outs = "in1_outputs/" + filename
+            #copies the file to the target
+            shutil.copy(os.path.join(root, filename), in1_outs)
+        #same thing for files in the shared list
+        elif filename in shared:
+            shared_out = "shared_out/" + filename
+            shutil.copy(os.path.join(root, filename), shared_out)
+        #error message
+        else:
+            print(f"There was an error with {filename}")
 
 for root, dirs, files in os.walk("input2", topdown=False):
     for filename in files:
-        print(filename)
         if filename in input2_only:
-            print('yay')
-            out = "outputs/" + filename
-            shutil.copy(os.path.join(root, filename), out)
+            in2_outs = "in2_outputs/" + filename
+            shutil.copy(os.path.join(root, filename), in2_outs)
+        #this may not be necessary
+        #it doesn't appear to double copy, but if it does just cut it
+        elif filename in shared:
+            shared_out = "shared_out/" + filename
+            shutil.copy(os.path.join(root, filename), shared_out)
 
-
-# for file in directory:
-    #if file in shared:
-        #copy file to /shared
-    #elif file in input1_only:
-        #copy file to /input1_only
-    #elif file in input2_only:
-        #copy file to /input2_only
-    #else:
-        #print("error")
 
 #TODO: rewrite mp3 tags
