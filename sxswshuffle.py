@@ -7,6 +7,7 @@
 import glob
 import os
 import shutil
+import eyed3
 
 
 michael_input_only = []
@@ -31,6 +32,7 @@ jessica_input_cleaned = ([s.strip('jessica_input/') for s in jessica_input])
 
 #########################
 ####Sort file names into lists
+###########################
 
 #analyize input1
 #for the first one you need to add files to the shared folder too
@@ -91,4 +93,26 @@ for root, dirs, files in os.walk("jessica_input", topdown=False):
             print(f"There was an error with {filename}")
 
 
-#TODO: rewrite mp3 tags
+###############################
+############rewrite mp3 album tags
+#################################
+
+#rename the album for Jessica only files
+for root, dirs, files in os.walk("jessica_out/", topdown=False):
+    for filename in files:
+        #create the name of the file that includes the dir and the filename
+        alt_name = "jessica_out/" + filename
+        #create teh eyed3 object based on that file name
+        new_audio = eyed3.load(alt_name)
+        #rewrite the audio tag
+        new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Jessica)"
+        #save the change
+        new_audio.tag.save()
+
+#rename the album for Michael only files
+for root, dirs, files in os.walk("michael_out/", topdown=False):
+    for filename in files:
+        alt_name = "michael_out/" + filename
+        new_audio = eyed3.load(alt_name)
+        new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Michael)"
+        new_audio.tag.save()
