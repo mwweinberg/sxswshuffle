@@ -9,10 +9,12 @@ import os
 import shutil
 import eyed3
 
-
+#lists for the file names
 michael_input_only = []
 jessica_input_only = []
 shared = []
+
+
 
 
 
@@ -97,6 +99,9 @@ for root, dirs, files in os.walk("jessica_input", topdown=False):
 ############rewrite mp3 album tags
 #################################
 
+#loads the cover art
+imagedata = open("sxsw2016.jpg", "rb").read()
+
 #rename the album for Jessica only files
 for root, dirs, files in os.walk("jessica_out/", topdown=False):
     for filename in files:
@@ -106,6 +111,9 @@ for root, dirs, files in os.walk("jessica_out/", topdown=False):
         new_audio = eyed3.load(alt_name)
         #rewrite the audio tag
         new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Jessica)"
+        #add the cover art
+        #3 is front image, imagedata is the image object from above, image/png is mime type
+        new_audio.tag.images.set(3,imagedata,"image/jpeg")
         #save the change
         new_audio.tag.save()
 
