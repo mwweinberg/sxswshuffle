@@ -123,4 +123,13 @@ for root, dirs, files in os.walk("michael_out/", topdown=False):
         alt_name = "michael_out/" + filename
         new_audio = eyed3.load(alt_name)
         new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Michael)"
+        new_audio.tag.images.set(3,imagedata,"image/jpeg")
+        new_audio.tag.save()
+
+#this just adds the album art because the name is right already
+for root, dirs, files in os.walk("shared_out/", topdown=False):
+    for filename in files:
+        alt_name = "shared_out/" + filename
+        new_audio = eyed3.load(alt_name)
+        new_audio.tag.images.set(3,imagedata,"image/jpeg")
         new_audio.tag.save()
