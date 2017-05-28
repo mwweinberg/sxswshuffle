@@ -14,6 +14,11 @@ michael_input_only = []
 jessica_input_only = []
 shared = []
 
+#error handling during the metadata phase
+michael_shame = []
+jessica_shame = []
+shared_shame = []
+
 
 
 
@@ -126,17 +131,21 @@ print(" ")
 for root, dirs, files in os.walk("jessica_out/", topdown=False):
     for filename in files:
         print(f"Fixing {filename}")
-        #create the name of the file that includes the dir and the filename
-        alt_name = "jessica_out/" + filename
-        #create teh eyed3 object based on that file name
-        new_audio = eyed3.load(alt_name)
-        #rewrite the audio tag
-        new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Jessica)"
-        #add the cover art
-        #3 is front image, imagedata is the image object from above, image/png is mime type
-        new_audio.tag.images.set(3,imagedata,"image/jpeg")
-        #save the change
-        new_audio.tag.save()
+        #if/else screens out non-mp3 files which would throw up an error
+        if "mp3" in filename:
+            #create the name of the file that includes the dir and the filename
+            alt_name = "jessica_out/" + filename
+            #create teh eyed3 object based on that file name
+            new_audio = eyed3.load(alt_name)
+            #rewrite the audio tag
+            new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Jessica)"
+            #add the cover art
+            #3 is front image, imagedata is the image object from above, image/png is mime type
+            new_audio.tag.images.set(3,imagedata,"image/jpeg")
+            #save the change
+            new_audio.tag.save()
+        else:
+            jessica_shame.append(filename)
 
 print(" ")
 print("Fixing the album for Michael only.")
@@ -146,11 +155,15 @@ print(" ")
 for root, dirs, files in os.walk("michael_out/", topdown=False):
     for filename in files:
         print(f"Fixing {filename}")
-        alt_name = "michael_out/" + filename
-        new_audio = eyed3.load(alt_name)
-        new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Michael)"
-        new_audio.tag.images.set(3,imagedata,"image/jpeg")
-        new_audio.tag.save()
+        if "mp3" in filename:
+            alt_name = "michael_out/" + filename
+            new_audio = eyed3.load(alt_name)
+            new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Michael)"
+            new_audio.tag.images.set(3,imagedata,"image/jpeg")
+            new_audio.tag.save()
+        else:
+            michael_shame.append(filename)
+
 
 print(" ")
 print("Fixing the album for shared music.")
@@ -159,10 +172,20 @@ print(" ")
 for root, dirs, files in os.walk("shared_out/", topdown=False):
     for filename in files:
         print(f"Fixing {filename}")
-        alt_name = "shared_out/" + filename
-        new_audio = eyed3.load(alt_name)
-        new_audio.tag.images.set(3,imagedata,"image/jpeg")
-        new_audio.tag.save()
+        if "mp3" in filename:
+            alt_name = "shared_out/" + filename
+            new_audio = eyed3.load(alt_name)
+            new_audio.tag.images.set(3,imagedata,"image/jpeg")
+            new_audio.tag.save()
+        else:
+            shared_shame.append(filename)
+
+#these are the files that could not have metadata edited
+print(" ")
+print(f"Jessica Shame = {jessica_shame}")
+print(f"Michael Shame = {michael_shame}")
+print(f"Shared Shame = {shared_shame}")
+print(" ")
 
 print(" ")
 print("Done!")
