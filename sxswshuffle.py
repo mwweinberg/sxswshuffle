@@ -2,6 +2,8 @@
 #michael_input and jessica_input
 #you also need to create michael_out and jessica_out before running
 
+#update cover art file around line 127
+#and audio tag around 143 and 163
 
 
 import glob
@@ -122,7 +124,7 @@ for root, dirs, files in os.walk("jessica_input", topdown=False):
 #################################
 
 #loads the cover art
-imagedata = open("sxsw2016.jpg", "rb").read()
+imagedata = open("sxsw2017.jpg", "rb").read()
 print(" ")
 print("Fixing the album for Jessica only.")
 print(" ")
@@ -138,7 +140,7 @@ for root, dirs, files in os.walk("jessica_out/", topdown=False):
             #create teh eyed3 object based on that file name
             new_audio = eyed3.load(alt_name)
             #rewrite the audio tag
-            new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Jessica)"
+            new_audio.tag.album = u"SXSW 2017 Showcasing Artist (Jessica)"
             #add the cover art
             #3 is front image, imagedata is the image object from above, image/png is mime type
             new_audio.tag.images.set(3,imagedata,"image/jpeg")
@@ -158,7 +160,7 @@ for root, dirs, files in os.walk("michael_out/", topdown=False):
         if "mp3" in filename:
             alt_name = "michael_out/" + filename
             new_audio = eyed3.load(alt_name)
-            new_audio.tag.album = u"SXSW 2016 Showcasing Artist (Michael)"
+            new_audio.tag.album = u"SXSW 2017 Showcasing Artist (Michael)"
             new_audio.tag.images.set(3,imagedata,"image/jpeg")
             new_audio.tag.save()
         else:
