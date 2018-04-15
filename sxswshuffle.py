@@ -1,3 +1,5 @@
+#run as python3.6 or higher
+
 #input folders need to be
 #michael_input and jessica_input
 #you also need to create michael_out and jessica_out before running
